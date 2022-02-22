@@ -1,3 +1,4 @@
+import 'package:api_demo/blocs/auth_blocs/auth_bloc.dart';
 import 'package:api_demo/blocs/demo_blocs/demo_bloc.dart';
 import 'package:api_demo/blocs/system_blocs/system_bloc.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,10 @@ class MainBloc {
       //System bloc provider
       BlocProvider<SystemBloc>(
         create: (BuildContext context) => SystemBloc(),
+      ),
+      //Auth bloc provider
+      BlocProvider<AuthBloc>(
+        create: (BuildContext context) => AuthBloc(),
       ),
     ];
   }

@@ -5,6 +5,8 @@ class SharedPrefKeys {
 
   static const String languageCd = 'languageCd';
   static const String themeFlag = 'themeFlag';
+  static const String username = 'saveUser';
+  static const String password = 'savePassword';
 }
 
 class SharedPreferencesService {
@@ -36,4 +38,18 @@ class SharedPreferencesService {
   // Get theme local
   bool get isDarkMode =>
       _preferences.getBool(SharedPrefKeys.themeFlag) ?? false;
+
+  // Set username local
+  Future<void> setUsername(String userCode) async =>
+      await _preferences.setString(SharedPrefKeys.username, userCode);
+
+  // Get username local
+  String get userCode => _preferences.getString(SharedPrefKeys.username) ?? '';
+
+  // Set password local
+  Future<void> setPassword(String password) async =>
+      await _preferences.setString(SharedPrefKeys.password, password);
+
+  // Get password local
+  String get password => _preferences.getString(SharedPrefKeys.password) ?? '';
 }

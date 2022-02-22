@@ -10,7 +10,7 @@ class ApiClient extends ApiInterface {
   Future<List<DemoModel>> getDemoList() async {
     final response = await http.get(Uri.parse(baseUrl));
     if (response.statusCode == 200) {
-     Iterable demoResult =  jsonDecode(response.body);
+      Iterable demoResult = jsonDecode(response.body);
       return demoResult.map((e) => DemoModel.fromJson(e)).toList();
     } else {
       var message = response.body;
@@ -19,5 +19,15 @@ class ApiClient extends ApiInterface {
       }
       return throw Exception('Error: Service Not Available. Please try later');
     }
+  }
+
+  bool requestLogin(String userName, String passWord) {
+    bool isLogin = false;
+    if (userName == 'Son' && passWord == '123456') {
+      isLogin = true;
+    } else {
+      isLogin = false;
+    }
+    return isLogin;
   }
 }

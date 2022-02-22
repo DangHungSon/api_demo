@@ -1,7 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-import '../../app_localizations.dart';
-
 abstract class DemoEvent extends Equatable {
   const DemoEvent();
 

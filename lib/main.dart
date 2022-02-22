@@ -1,9 +1,10 @@
 import 'package:api_demo/blocs/system_blocs/system_bloc.dart';
 import 'package:api_demo/blocs/system_blocs/system_states.dart';
 import 'package:api_demo/home.dart';
+import 'package:api_demo/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'app_localizations.dart';
+import 'services/app_localizations.dart';
 import 'blocs/main_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'blocs/system_blocs/system_events.dart';
@@ -73,7 +74,7 @@ class _MainAppState extends State<MainApp> {
 
   Widget _buildUI(BuildContext context) {
     return MaterialApp(
-      theme: themeData == true ? ThemeData.dark() : ThemeData.light(),
+      theme: themeData == true ? ThemeData.light() : ThemeData.light(),
       locale: _locale,
       localizationsDelegates: const [
         AppLocalization.delegate,
@@ -85,7 +86,7 @@ class _MainAppState extends State<MainApp> {
         Locale('en', 'US'),
         Locale('vi', 'VN'),
       ],
-      home: const HomeScreen(),
+      home: const LoginScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

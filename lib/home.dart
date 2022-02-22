@@ -1,4 +1,4 @@
-import 'package:api_demo/app_localizations.dart';
+import 'package:api_demo/services/app_localizations.dart';
 import 'package:api_demo/blocs/demo_blocs/demo_bloc.dart';
 import 'package:api_demo/blocs/demo_blocs/demo_events.dart';
 import 'package:api_demo/blocs/demo_blocs/demo_states.dart';
