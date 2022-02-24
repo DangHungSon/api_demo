@@ -5,8 +5,7 @@ class SharedPrefKeys {
 
   static const String languageCd = 'languageCd';
   static const String themeFlag = 'themeFlag';
-  static const String username = 'saveUser';
-  static const String password = 'savePassword';
+  static const String loginToken = 'token';
 }
 
 class SharedPreferencesService {
@@ -39,17 +38,14 @@ class SharedPreferencesService {
   bool get isDarkMode =>
       _preferences.getBool(SharedPrefKeys.themeFlag) ?? false;
 
-  // Set username local
-  Future<void> setUsername(String userCode) async =>
-      await _preferences.setString(SharedPrefKeys.username, userCode);
+  // Set token local
+  Future<void> setToken(String accessToken) async =>
+      await _preferences.setString(SharedPrefKeys.loginToken, accessToken);
 
-  // Get username local
-  String get userCode => _preferences.getString(SharedPrefKeys.username) ?? '';
+  // Get token local
+  String get accessToken => _preferences.getString(SharedPrefKeys.loginToken) ?? '';
 
-  // Set password local
-  Future<void> setPassword(String password) async =>
-      await _preferences.setString(SharedPrefKeys.password, password);
+  // Delete token local
+  Future<bool> get removeToken => _preferences.remove(SharedPrefKeys.loginToken);
 
-  // Get password local
-  String get password => _preferences.getString(SharedPrefKeys.password) ?? '';
 }

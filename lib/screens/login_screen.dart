@@ -14,30 +14,16 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   //Username controller
   final _userNameController = TextEditingController();
 
   //Password controller
   final _passwordController = TextEditingController();
 
-
-  @override
-  void initState() {
-    _getLogin();
-    super.initState();
-  }
   _requestLogin() {
     BlocProvider.of<AuthBloc>(context).add(RequestLoginEvent(
         userName: _userNameController.text,
         passWord: _passwordController.text));
-  }
-
-  _getLogin() async {
-    final pref = await SharedPreferencesService.instance;
-    _userNameController.text = pref.userCode == 'Son' ? 'Son' : '';
-    _passwordController.text = pref.password == '123456' ? '123456' : '';
-    setState(() {});
   }
 
   @override
@@ -47,7 +33,6 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
@@ -55,8 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
         listener: (context, state) {
           if (state is AuthLoading) {
           } else if (state is AuthLoaded) {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+            createAlertDialog(context);
           } else if (state is AuthError) {}
         });
   }
@@ -270,5 +254,27 @@ class _LoginScreenState extends State<LoginScreen> {
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500))
       ])),
     );
+  }
+
+  //Login dialog
+  createAlertDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Thông báo'),
+            content: const Text('Đăng Nhập thành công'),
+            actions: [
+              MaterialButton(
+                onPressed: () {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+                },
+                child: const Text('OK'),
+                elevation: 5,
+              )
+            ],
+          );
+        });
   }
 }

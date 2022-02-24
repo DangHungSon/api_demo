@@ -1,3 +1,4 @@
+import 'package:api_demo/screens/login_screen.dart';
 import 'package:api_demo/services/app_localizations.dart';
 import 'package:api_demo/blocs/demo_blocs/demo_bloc.dart';
 import 'package:api_demo/blocs/demo_blocs/demo_events.dart';
@@ -26,14 +27,24 @@ class _HomeScreenState extends State<HomeScreen> {
   List languages = ["English", "Vietnamese"];
   String lang = "English";
 
-  bool isChange = true;
+  bool isChange = false;
 
   _requestDemo() async {
     BlocProvider.of<DemoBloc>(context).add(const RequestObject());
   }
 
-  _requestTheme(bool isChange) async {
-    BlocProvider.of<SystemBloc>(context).add(RequestChangeTheme(isChange));
+
+  _getThemeShared() async{
+    final pref = await SharedPreferencesService.instance;
+    setState(() {
+      isChange = pref.isDarkMode;
+    });
+  }
+
+
+  _requestRemoveToken() async {
+    final pref = await SharedPreferencesService.instance;
+    pref.removeToken;
   }
 
   _getLanguageCd() async {
@@ -44,9 +55,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    _getThemeShared();
     _getLanguageCd();
     _requestDemo();
-    _requestTheme(isChange);
     super.initState();
   }
 
@@ -72,12 +83,23 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.black,
         elevation: 0,
         actions: [
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                _requestRemoveToken();
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const LoginScreen()));
+              },
+              child: const Text('Log out'),
+            ),
+          ),
           Switch(
               value: isChange,
               onChanged: (newValue) {
                 setState(() {
-                   isChange = newValue;
-                  BlocProvider.of<SystemBloc>(context).add(RequestChangeTheme(isChange));
+                  isChange = newValue;
+                  BlocProvider.of<SystemBloc>(context)
+                      .add(RequestChangeTheme(isChange));
                 });
               }),
           DropdownButton(

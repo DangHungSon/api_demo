@@ -37,8 +37,8 @@ class SystemBloc extends Bloc<SystemEvent, SystemState> {
   //Change Theme
   _handleChangeTheme(RequestChangeTheme event, Emitter emit) async {
     final pref = await SharedPreferencesService.instance;
-    bool themeData = event.isChange ;
-
-    emit(ChangeThemeSuccess(themeData: themeData));
+    bool theme = event.isChange;
+      pref.setTheme(theme);
+    emit(ChangeThemeSuccess(themeData: theme));
   }
 }

@@ -16,34 +16,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   // Process get token
   _handleLogin(RequestLoginEvent event,Emitter emit) async {
     final pref = await SharedPreferencesService.instance;
-    String username;
-    String password;
     emit(const AuthLoading());
     try {
       var responseAuth =  apiClient.requestLogin(event.userName, event.passWord);
-      if(event.userName == 'Son'){
-        if(pref.userCode.isEmpty){
-          username = 'Son';
-          await pref.setUsername(username);
-        }else {
-          username = pref.userCode;
-        }
-      } else {
-        username = event.userName;
-        pref.setUsername(username);
-      }
-      if(event.passWord == '123456'){
-        if(pref.password.isEmpty){
-          password = '123456';
-          await pref.setPassword(password);
-        }else {
-          password = pref.password;
-        }
-      } else {
-        password = event.passWord;
-        pref.setPassword(password);
-      }
       if(responseAuth == true) {
+        pref.setToken('loginSuccess');
         emit(AuthLoaded(isLogin: responseAuth));
       } else {
         emit(const AuthError(message:"Login error"));

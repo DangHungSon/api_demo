@@ -2,6 +2,7 @@ import 'package:api_demo/blocs/system_blocs/system_bloc.dart';
 import 'package:api_demo/blocs/system_blocs/system_states.dart';
 import 'package:api_demo/home.dart';
 import 'package:api_demo/screens/login_screen.dart';
+import 'package:api_demo/services/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'services/app_localizations.dart';
@@ -42,18 +43,45 @@ class _MainAppState extends State<MainApp> {
   Locale _locale = const Locale('en', 'US');
 
   //Theme flag
-  late bool themeData = true;
+  late bool themeData =false ;
+
+  //Login flag
+  bool _isLogin = false;
 
 
   // Get languageCd from local storage
-  _getLanguageCd() async {
+  _getLanguageCd() {
     BlocProvider.of<SystemBloc>(context).add(const RequestChangeLanguage(
         isStartLoad: true, locale: Locale('en', 'US')));
   }
 
+  //
+  _getThemeShared() async{
+    final pref = await SharedPreferencesService.instance;
+    setState(() {
+      themeData = pref.isDarkMode;
+    });
+  }
+
+  //Get access token
+  _getAccessToken() async {
+    final pref = await SharedPreferencesService.instance;
+    if(pref.accessToken.isNotEmpty){
+      setState(() {
+        _isLogin = !_isLogin;
+      });
+    } else{
+      setState(() {
+        _isLogin = _isLogin;
+      });
+    }
+  }
+
   @override
   void initState() {
+    _getThemeShared();
     _getLanguageCd();
+    _getAccessToken();
     super.initState();
   }
 
@@ -74,7 +102,7 @@ class _MainAppState extends State<MainApp> {
 
   Widget _buildUI(BuildContext context) {
     return MaterialApp(
-      theme: themeData == true ? ThemeData.light() : ThemeData.light(),
+      theme: themeData == true ? ThemeData.dark() : ThemeData.light(),
       locale: _locale,
       localizationsDelegates: const [
         AppLocalization.delegate,
@@ -86,8 +114,10 @@ class _MainAppState extends State<MainApp> {
         Locale('en', 'US'),
         Locale('vi', 'VN'),
       ],
-      home: const LoginScreen(),
+      home: _isLogin ? const HomeScreen() : const LoginScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
+
+
 }
